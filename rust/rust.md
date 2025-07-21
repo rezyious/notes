@@ -12,8 +12,8 @@ output:
     Austria 8
 ```
 
-Interesting face about **move** : <br />
-Another interesting fact. The variable is not mutable but it does not matter since it **moves** to
+Interesting fact about **move** : <br />
+The variable is not mutable but it does not matter since it **moves** to
 the function but the parameter of the function must be `mut`:
 ```
     fn main() {
@@ -97,7 +97,7 @@ that doesn’t exist. Take this code for example:
 And the compiler in the error message point out the type.
 
 About **match** : <br/>
-You can even put if inside of match. This is called a *match guard*:
+You can even put `if` inside of match. This is called a *match guard*:
 ```
 
     fn main() {
@@ -151,7 +151,7 @@ check one at a time:
     }
 ```
 
-This example also shows how match statements work because in the first example, it only prints Not much blue. But 
+This example also shows how match statements work because in the first example, it only prints "Not much blue". But 
 first also has “not much green.” **A match statement always stops when it finds a match and doesn’t check the rest.** 
 This is a good example of code that compiles well but is probably not the code you want.<br/>
 
