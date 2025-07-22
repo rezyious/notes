@@ -176,3 +176,72 @@ use that number in a println! statement. Otherwise, we don’t need to use it:
 ```
 Also note the use of range `14..=19` in the match arm.
 
+Fun and Stupid fact about methods:<br/>
+You can call all methods using `::` if you want, but methods that take self use `.` for convenience.
+```
+    fn main() {
+        let person = Person {
+            name: String::from("reza"),
+            age: 38,
+        };
+        Person::dumb();
+        person.introduce();
+        Person::introduce(&person);
+    }
+
+    #[derive(Debug)]
+    struct Person {
+        name: String,
+        age: u8,
+    }
+
+    impl Person {
+        fn dumb() {
+            println!("Dumb method");
+        }
+
+        fn introduce(&self) {
+            println!("{} is {} years old", self.name, self.age);
+        }
+    }
+```
+
+Destructuring structs : <br/>
+```
+    struct Person {
+        name: String,
+        real_name: String,
+        height: u8,
+        happiness: bool,
+    }
+
+    // Destructuring inside the signature of a function
+    fn check_if_happy_destructured(
+        Person {
+            name, happiness, ..
+        }: &Person,
+    ) {
+        println!("Is {name} happy? {happiness}");
+    }
+
+    fn main() {
+        let papa_doc = Person {
+            name: "Papa Doc".to_string(),
+            real_name: "Clarence".to_string(),
+            height: 170,
+            happiness: false,
+        };
+
+        check_if_happy_destructured(&papa_doc);
+
+        // Destructuring a struct
+        let Person {
+            name : fake_name,  // we can aslo rename
+            real_name,
+            ..  // This is to say we only need name and real_name and ignore
+                // height, happiness,
+        } = papa_doc;
+
+        println!("They call him {fake_name} but his real name is {real_name}. ");
+    }
+```
