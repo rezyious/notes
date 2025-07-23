@@ -113,3 +113,103 @@ rsync [options] source destination
 - **Dry Run**: Use `--dry-run` to simulate the sync without making changes.
 
 For more details, check the rsync man page (`man rsync`) or its official documentation. If you have a specific use case or need help with a command, let me know!
+
+---
+# second article
+Also a helpful article : <br/>
+<a href="https://www.geeksforgeeks.org/linux-unix/rsync-command-in-linux-with-examples/">geeksforgeeks</a>
+
+Syntax of `rsync` command in Linux
+```
+rsync [options] source [destination]
+```
+
+Using `rsync` as a list command: <br/>
+If only the source path is specified, the contents of the source are listed in an output format similar to `ls -l`.
+```
+rsync foo/ 
+```
+
+Copy/Sync files and directory locally: <br/>
+If neither the source or destination path specifies a remote host, the rsync commands behave as a copy command.
+```
+rsync -avh foo/ bar/ 
+```
+If the destination directory is not present , rsync automatically creates one and copies all the data in it.
+
+
+Rsync using ssh: <br/>
+There are two different ways for rsync to contact a remote system:
+- Using a remote-shell program as the transport(such as ssh(Secure Shell) or rsh(Remote Shell)).
+- Contacting an rsync daemon directly via TCP.
+
+Here we will be discussing rsync over ssh.
+```
+rsync -avhze ssh /foo user@remote-host:/tmp/
+```
+
+Rsync with particular file permissions: <br/>
+If we want to sync files to the local or remote host with the permissions of the files being changed. 
+The following command must be used.
+```
+rsync -avhe ssh --chown=USER:GROUP /foo user@remote-host:/tmp/
+```
+The above command will sync all the files present in directory `/foo` with the files present in directory `/tmp` in 
+the remote-host with all the files owned by USER with group GROUP. 
+
+Rsync with `--ignore-existing-files`: <br/>
+We can also skip the already existing files on the destination. This can generally be used when we are performing 
+backups using the `--link-dest` option, while continuing a backup run that got interrupted.
+```
+rsync --ignore-existing -avhe /foo user@remote-host:/tmp/
+```
+So, any files that do not exist on the destination will be copied over.
+
+
+Show progress during transfer: <br/>
+To show the progress while transferring the data from local-host to remote-host, we can use `-–progress` option.
+```
+rsync -avhe ssh --progress /foo user@remote-host:/tmp/
+```
+
+
+Update the remote only if there is a newer version is on the local filesystem: <br/>
+If we want to copy files over the remote-host that have been updated more recently on the local filesystem. It is 
+done with `--update` flag. The behavior is now like this:
+- Files that do not exist on the remote-host are copied.
+- Files that exist on both local and remote but have a newer timestamp on the local-host are copied to 
+remote-host. (Conversely, files that have an older timestamp are not copied).
+
+Here, I made some changes in file1 and file2, but the changes in file2 were done recently. So only file2 will get synced.
+```
+rsync -avhe ssh --progress --update /foo root@remote-host:/tmp/
+```
+
+
+Automatically delete files from local-host after successful transferring:
+```
+rsync -avhe ssh --remove-source-files /foo user@backup-server:/tmp
+```
+
+
+Delete the files that have been deleted on the local-host:
+```
+rsync -avhe ssh  /foo --delete user@remote-host:/tmp/
+```
+
+
+Performing a Dry run with `rsync` : <br/>
+A Dry run makes `rsync` perform a trial run that doesn't make any changes and displays almost the same output as a 
+real run would do. It is generally used with the `-v`, `--verbose` and/or `-i`, `--itemize-changes` options so as to 
+see what a `rsync` command would do before one actually runs it.
+```
+rsync -avhe ssh --dry-run --chown=USER:GROUP /foo user@remote-host:/
+```
+
+---
+# third article
+the third article <a href="https://www.tecmint.com/rsync-local-remote-file-synchronization-commands/">link</a> <br/>
+
+
+
+
